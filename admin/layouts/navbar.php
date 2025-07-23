@@ -195,13 +195,14 @@
     $(document).ready(function () {
         $('#logoutBtn').click(function () {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You want to logout?",
+                title: 'Confirm Logout',
+                text: "Are you sure you want to log out? You will need to sign in again to access the admin panel.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, logout!'
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, log me out',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = "<?= ADMIN_URL ?>logout.php";
