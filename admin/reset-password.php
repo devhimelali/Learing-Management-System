@@ -20,27 +20,49 @@ try {
     $token = $_GET['token'];
     $email = $_GET['email'];
 
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND password_reset_token = :password_reset_token');
+    $stmt->bindParam(':password_reset_token', $token);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $total = $stmt->rowCount();
 
-    $rules = [
-        'email' => 'required|email',
-        'token' => 'required',
-        'password' => 'required|min:6|confirmed',
-    ];
+    if ($total == 0) {
+        header('Location: ' . ADMIN_URL . 'login.php');
+        exit;
+    }
 
-    $errors = validateInputs($_POST, $rules);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $rules = [
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ];
 
+        $errors = validateInputs($_POST, $rules);
+        if (count($errors) > 0) {
+            throw new Exception('Invalid credentials. Please provide valid email and password.');
+        }
 
+        // === Query user from database ===
+        $query = $pdo->prepare("SELECT * FROM users WHERE email = :email AND password_reset_token = :password_reset_token AND role = 'admin'");
+        $query->bindParam(':password_reset_token', $token);
+        $query->bindParam(':email', $email);
+        $query->execute();
+        $total = $query->rowCount();
 
+        if ($total == 0) {
+            throw new Exception('User not found.');
+        } else {
+            $stmt = $pdo->prepare('UPDATE users SET password = :password, password_reset_token = NULL WHERE email = :email AND password_reset_token = :password_reset_token');
+            $stmt->bindParam(':password_reset_token', $token);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
+            $stmt->execute();
+            $success_message = 'Password changed successfully.';
 
-
-
-
-
-
-
-
-    if (count($errors) > 0) {
-        throw new Exception('Invalid credentials. Please provide valid email and password.');
+            header('Location: ' . ADMIN_URL . 'login.php');
+            exit;
+        }
     }
 
 } catch (Exception $e) {
@@ -65,28 +87,6 @@ try {
                                             password.
                                         </p>
                                     </div>
-
-                                    <?php if (!empty($errors)):
-                                        foreach ($errors as $fieldErrors):
-                                            foreach ($fieldErrors as $error):
-                                                ?>
-                                                <div class="alert alert-danger" role="alert">
-                                                    <?php echo $error; ?>
-                                                </div>
-                                                <?php
-                                            endforeach;
-                                        endforeach;
-                                    elseif (isset($error_message)): ?>
-                                        <div class="alert alert-danger" role="alert">
-                                            <?php echo $error_message; ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <?php if (isset($success_message)): ?>
-                                        <div class="alert alert-danger" role="alert">
-                                            <?php echo $success_message; ?>
-                                        </div>
-                                    <?php endif; ?>
 
                                     <div class="p-2">
                                         <form method="POST" action="" id="resetPasswordForm">

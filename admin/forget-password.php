@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('User not found.');
         }
 
+
         // === Generate password reset token ===
         $token = bin2hex(random_bytes(32));
 
@@ -44,6 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             throw new Exception('Failed to send password reset link. Please try again.');
         }
+
+        // === Update password reset token in database ===
+        $stmt = $pdo->prepare("UPDATE users SET password_reset_token = :token WHERE email = :email");
+        $stmt->bindParam(':token', $token);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
 
 
     } catch (Exception $e) {
@@ -69,28 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 class="avatar-md">
                                         </div>
                                     </div>
-                                    <?php
-                                    if (!empty($errors)):
-                                        foreach ($errors as $fieldErrors):
-                                            foreach ($fieldErrors as $error):
-                                                ?>
-                                                <div class="mx-2 mb-2 text-center border-0 alert alert-danger infoBox" role="alert">
-                                                    <?= $error; ?>
-                                                </div>
-                                                <?php
-                                            endforeach;
-                                        endforeach;
-                                    elseif (isset($error_message)): ?>
-                                        <div class="mx-2 mb-2 text-center border-0 alert alert-danger infoBox" role="alert">
-                                            <?= $error_message; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if (isset($success_message)): ?>
-                                        <div class="mx-2 mb-2 text-center border-0 alert alert-success infoBox"
-                                            role="alert">
-                                            <?php echo $success_message; ?>
-                                        </div>
-                                    <?php endif; ?>
                                     <div class="p-2">
                                         <form method="POST" action="" id="forgotPasswordForm">
                                             <div class="mb-4">

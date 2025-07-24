@@ -66,21 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="text-center">
                                         <h5 class="fs-3xl">Welcome Back</h5>
                                         <p class="text-muted">Sign in to continue to <?= APP_NAME ?></p>
-                                        <?php if (!empty($errors)):
-                                            foreach ($errors as $fieldErrors):
-                                                foreach ($fieldErrors as $error):
-                                                    ?>
-                                                    <div class="alert alert-danger" role="alert">
-                                                        <?php echo $error; ?>
-                                                    </div>
-                                                    <?php
-                                                endforeach;
-                                            endforeach;
-                                        elseif (isset($error_message)): ?>
-                                            <div class="alert alert-danger" role="alert">
-                                                <?php echo $error_message; ?>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
                                     <div class="p-2 mt-2">
                                         <form action="" method="post" id="loginForm">
