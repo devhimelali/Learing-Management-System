@@ -33,6 +33,12 @@
     <?php if (isset($success_message)): ?>
         notify('success', '<?= $success_message; ?>');
     <?php endif; ?>
+
+    // === Custom Toasts ===
+    <?php if (isset($_SESSION['status'])): ?>
+        notify('<?= $_SESSION['status']['type']; ?>', '<?= $_SESSION['status']['message']; ?>');
+        <?php unset($_SESSION['status']);
+    endif; ?>
 </script>
 </body>
 

@@ -72,6 +72,27 @@
             console.error(`Invalid toastr type: ${type}`);
         }
     }
+    <?php if (!empty($errors)):
+        foreach ($errors as $fieldErrors):
+            foreach ($fieldErrors as $error):
+                ?>
+                notify('error', '<?= $error; ?>');
+                <?php
+            endforeach;
+        endforeach;
+    elseif (isset($error_message)): ?>
+        notify('error', '<?= $error_message; ?>');
+    <?php endif; ?>
+
+    <?php if (isset($success_message)): ?>
+        notify('success', '<?= $success_message; ?>');
+    <?php endif; ?>
+
+    // === Custom Toasts ===
+    <?php if (isset($_SESSION['status'])): ?>
+        notify('<?= $_SESSION['status']['type']; ?>', '<?= $_SESSION['status']['message']; ?>');
+        <?php unset($_SESSION['status']);
+    endif; ?>
 
     function show(type, options) {
         if (['info', 'success', 'warning', 'error'].includes(type)) {

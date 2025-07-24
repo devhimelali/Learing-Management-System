@@ -6,11 +6,19 @@ include('../helper/validation-helper.php');
 // === Check if user is already logged in ===
 if (isset($_SESSION['admin'])) {
     header('Location: ' . ADMIN_URL . 'dashboard.php');
+    $_SESSION['status'] = [
+        'type' => 'success',
+        'message' => 'You are already logged in.',
+    ];
     exit;
 }
 
 if (empty($_GET['token']) && empty($_GET['email'])) {
     header('Location: ' . ADMIN_URL . 'login.php');
+    $_SESSION['status'] = [
+        'type' => 'error',
+        'message' => 'Invalid token.',
+    ];
     exit;
 }
 
@@ -28,6 +36,10 @@ try {
 
     if ($total == 0) {
         header('Location: ' . ADMIN_URL . 'login.php');
+        $_SESSION['status'] = [
+            'type' => 'error',
+            'message' => 'Please provide valid token.',
+        ];
         exit;
     }
 
@@ -61,6 +73,10 @@ try {
             $success_message = 'Password changed successfully.';
 
             header('Location: ' . ADMIN_URL . 'login.php');
+            $_SESSION['status'] = [
+                'type' => 'success',
+                'message' => $success_message,
+            ];
             exit;
         }
     }

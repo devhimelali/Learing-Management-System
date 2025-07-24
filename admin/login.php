@@ -6,6 +6,12 @@ include('../helper/validation-helper.php');
 // === Check if user is already logged in ===
 if (isset($_SESSION['admin'])) {
     header('Location: ' . ADMIN_URL . 'dashboard.php');
+
+    $_SESSION['status'] = [
+        'type' => 'success',
+        'message' => 'You are already logged in.',
+    ];
+
     exit;
 }
 
@@ -44,6 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // === Set session and redirect ===
         $_SESSION['admin'] = $user;
         header('Location: ' . ADMIN_URL . 'dashboard.php');
+        $_SESSION['status'] = [
+            'type' => 'success',
+            'message' => 'You have successfully logged in.',
+        ];
         exit;
 
     } catch (Exception $e) {
