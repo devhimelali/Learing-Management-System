@@ -1,6 +1,8 @@
 <?php
 $title = "Forget Password";
 include('layouts/header.php');
+include('../helper/validation-helper.php');
+include('../helper/mailer-helper.php');
 
 // === Check if user is already logged in ===
 if (isset($_SESSION['admin'])) {
@@ -8,21 +10,18 @@ if (isset($_SESSION['admin'])) {
     exit;
 }
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $email = trim($_POST['email'] ?? '');
 
         // === Input validation ===
-        if (empty($email)) {
-            throw new Exception('Please enter your email.');
-        }
+        $rules = [
+            'email' => 'required|email',
+        ];
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Please enter a valid email address.');
+        $errors = validateInputs($_POST, $rules);
+        if (count($errors) > 0) {
+            throw new Exception('Invalid credentials. Please provide valid email.');
         }
 
         // === Query user from database ===
@@ -38,26 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // === Generate password reset token ===
         $token = bin2hex(random_bytes(32));
 
-        $email_message = "Please click on the following link in order to reset the password: <a href=" . BASE_URL . "reset-password.php?email=" . $email . "&token=" . $token . ">Reset Password</a>";
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = SMTP_HOST;
-        $mail->SMTPAuth = true;
-        $mail->Username = SMTP_USERNAME;
-        $mail->Password = SMTP_PASSWORD;
-        $mail->SMTPSecure = SMTP_ENCRYPTION;
-        $mail->Port = SMTP_PORT;
-        $user = $query->fetch(PDO::FETCH_ASSOC);
-        $mail->setFrom(SMTP_FROM);
-        $mail->addAddress($email);
-        $mail->isHTML(true);
-        $mail->Subject = 'Password Reset';
-        $mail->Body = $email_message;
+        $email_message = "Please click on the following link in order to reset the password: <a href=" . ADMIN_URL . "reset-password.php?email=" . $email . "&token=" . $token . ">Reset Password</a>";
 
-        if ($mail->send()) {
+        if (sendMail($email, 'Password Reset', $email_message)) {
             $success_message = 'Password reset link has been sent to your email.';
         } else {
-            $error_message = 'Failed to send password reset link. Please try again.';
+            throw new Exception('Failed to send password reset link. Please try again.');
         }
 
 
@@ -85,9 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                     <?php
-                                    if (isset($error_message)): ?>
+                                    if (!empty($errors)):
+                                        foreach ($errors as $fieldErrors):
+                                            foreach ($fieldErrors as $error):
+                                                ?>
+                                                <div class="mx-2 mb-2 text-center border-0 alert alert-danger infoBox" role="alert">
+                                                    <?= $error; ?>
+                                                </div>
+                                                <?php
+                                            endforeach;
+                                        endforeach;
+                                    elseif (isset($error_message)): ?>
                                         <div class="mx-2 mb-2 text-center border-0 alert alert-danger infoBox" role="alert">
-                                            <?php echo $error_message; ?>
+                                            <?= $error_message; ?>
                                         </div>
                                     <?php endif; ?>
                                     <?php if (isset($success_message)): ?>

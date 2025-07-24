@@ -1,6 +1,7 @@
 <?php
 $title = "Login";
 include('layouts/header.php');
+include('../helper/validation-helper.php');
 
 // === Check if user is already logged in ===
 if (isset($_SESSION['admin'])) {
@@ -14,20 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = trim($_POST['password'] ?? '');
 
         // === Input validation ===
-        if (empty($email)) {
-            throw new Exception('Please enter your email.');
-        }
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ];
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Please enter a valid email address.');
-        }
+        $errors = validateInputs($_POST, $rules);
 
-        if (empty($password)) {
-            throw new Exception('Please enter your password.');
-        }
-
-        if (strlen($password) < 6) {
-            throw new Exception('Password must be at least 6 characters.');
+        if (count($errors) > 0) {
+            throw new Exception('Invalid credentials. Please provide valid email and password.');
         }
 
         // === Query user from database ===
@@ -70,7 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="text-center">
                                         <h5 class="fs-3xl">Welcome Back</h5>
                                         <p class="text-muted">Sign in to continue to <?= APP_NAME ?></p>
-                                        <?php if (isset($error_message)): ?>
+                                        <?php if (!empty($errors)):
+                                            foreach ($errors as $fieldErrors):
+                                                foreach ($fieldErrors as $error):
+                                                    ?>
+                                                    <div class="alert alert-danger" role="alert">
+                                                        <?php echo $error; ?>
+                                                    </div>
+                                                    <?php
+                                                endforeach;
+                                            endforeach;
+                                        elseif (isset($error_message)): ?>
                                             <div class="alert alert-danger" role="alert">
                                                 <?php echo $error_message; ?>
                                             </div>
@@ -109,13 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                             </div>
 
-                                            <!-- <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    id="remember">
-                                                <label class="form-check-label" for="remember">Remember
-                                                    me</label>
-                                            </div> -->
-
                                             <div class="mt-4">
                                                 <button class="btn btn-primary w-100" name="login_submit" type="submit"
                                                     id="submitBtn">Sign
@@ -123,13 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </button>
                                             </div>
                                         </form>
-
-                                        <!-- <div class="text-center mt-4">
-                                            <p class="mb-0">Don't have an account ?
-                                                <a href="" class="fw-semibold text-secondary text-decoration-underline">
-                                                    SignUp</a>
-                                            </p>
-                                        </div> -->
                                     </div>
                                 </div><!-- end card body -->
                             </div><!-- end card -->
