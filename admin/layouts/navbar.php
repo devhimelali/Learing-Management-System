@@ -160,18 +160,19 @@
                     <img class="rounded-circle header-profile-user"
                         src="<?php BASE_URL ?>'assets/images/users/32/avatar-1.jpg" alt="Header Avatar">
                     <span class="text-start ms-xl-2">
-                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">John Doe</span>
+                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                            <?= ucfirst($_SESSION["admin"]["name"]) ?>
+                        </span>
                         <span class="d-none d-xl-block ms-1 fs-sm user-name-sub-text">
-                            Admin
+                            <?= ucfirst($_SESSION["admin"]["role"]) ?>
                         </span>
                     </span>
                 </span>
             </button>
             <div class="dropdown-menu dropdown-menu-end">
                 <!-- item-->
-                <h6 class="dropdown-header">Welcome John Doe!</h6>
-                <a class="dropdown-item"
-                    href="{{ route('profile.show', auth()->user()->roles->pluck('name')->first()) }}"><i
+                <h6 class="dropdown-header">Welcome <?= ucfirst($_SESSION["admin"]["name"]) ?>!</h6>
+                <a class="dropdown-item" href="<?= ADMIN_URL ?>profile.php"><i
                         class="align-middle mdi mdi-account-circle text-muted fs-lg me-1"></i> <span
                         class="align-middle">Profile</span></a>
                 <a class="dropdown-item" href="pages-profile-settings.html"><i

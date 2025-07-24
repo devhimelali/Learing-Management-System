@@ -1,4 +1,6 @@
-<?php include("layouts/top.php");
+<?php
+$title = "Dashboard";
+include("layouts/top.php");
 if (!isset($_SESSION["admin"])) {
     header("Location: " . ADMIN_URL . "login.php");
 }
