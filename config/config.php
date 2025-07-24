@@ -21,3 +21,5 @@ define("SMTP_HOST", "sandbox.smtp.mailtrap.io");
 define("SMTP_PORT", "587");
 define("SMTP_USERNAME", "f8ddae3483ea0b");
 define("SMTP_PASSWORD", "975d4f12136959");
+define("SMTP_ENCRYPTION", "tls");
+define("SMTP_FROM", "contact@lms.com");

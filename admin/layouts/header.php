@@ -1,6 +1,8 @@
 <?php
 ob_start();
 session_start();
+
+require '../vendor/autoload.php';
 include "../config/config.php";
 $current_page = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1);
 ?>
@@ -10,7 +12,7 @@ $current_page = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
 
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title><?= $title ?> - Best Learning Management System in Bangladesh </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesbrand" name="author">

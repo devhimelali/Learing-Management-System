@@ -1,4 +1,5 @@
 <?php
+$title = "Login";
 include('layouts/header.php');
 
 // === Check if user is already logged in ===
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="card-body p-sm-5">
                                     <div class="text-center">
                                         <h5 class="fs-3xl">Welcome Back</h5>
-                                        <p class="text-muted">Sign in to continue to </p>
+                                        <p class="text-muted">Sign in to continue to <?= APP_NAME ?></p>
                                         <?php if (isset($error_message)): ?>
                                             <div class="alert alert-danger" role="alert">
                                                 <?php echo $error_message; ?>
@@ -90,7 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                             <div class="mb-3">
                                                 <div class="float-end">
-                                                    <a href="" class="text-muted">Forgot
+                                                    <a href="<?= ADMIN_URL ?>forget-password.php"
+                                                        class="text-muted">Forgot
                                                         password?</a>
                                                 </div>
                                                 <label class="form-label" for="password-input">Password <span
@@ -122,12 +124,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </div>
                                         </form>
 
-                                        <div class="text-center mt-4">
+                                        <!-- <div class="text-center mt-4">
                                             <p class="mb-0">Don't have an account ?
                                                 <a href="" class="fw-semibold text-secondary text-decoration-underline">
                                                     SignUp</a>
                                             </p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div><!-- end card body -->
                             </div><!-- end card -->
@@ -143,45 +145,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <!--end container-->
 </section>
-<!-- <script>
-    $(document).ready(function () {
-        $('#loginForm').on('submit', function (e) {
-            e.preventDefault();
-
-            var $form = $(this);
-            var formData = new FormData(this);
-
-            // Clear previous errors
-            $form.find('.invalid-feedback').text('');
-            $form.find('.is-invalid').removeClass('is-invalid');
-
-            $.ajax({
-                url: '/admin/login.php', // current file
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.success) {
-                        window.location.href = data.redirect;
-                    } else if (data.errors) {
-                        $.each(data.errors, function (key, message) {
-                            var $input = $('[name="' + key + '"]');
-                            $input.addClass('is-invalid');
-                            $input.closest('.position-relative, .mb-3, .form-group').find('.invalid-feedback').text(message);
-                        });
-                    } else if (data.message) {
-                        toastr.error(data.message);
-                    }
-                },
-
-                error: function (xhr, status, error) {
-                    console.log(xhr)
-                }
-            });
-        });
-    });
-</script> -->
 
 <?php include('layouts/auth-footer.php'); ?>
