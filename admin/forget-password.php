@@ -7,6 +7,10 @@ include('../helper/mailer-helper.php');
 // === Check if user is already logged in ===
 if (isset($_SESSION['admin'])) {
     header('Location: ' . ADMIN_URL . 'dashboard.php');
+    $_SESSION['status'] = [
+        'type' => 'success',
+        'message' => 'You are already logged in.',
+    ];
     exit;
 }
 

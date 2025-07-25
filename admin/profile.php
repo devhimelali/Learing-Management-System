@@ -4,6 +4,10 @@ include("layouts/top.php");
 include("../helper/validation-helper.php");
 if (!isset($_SESSION["admin"])) {
     header("Location: " . ADMIN_URL . "login.php");
+    $_SESSION["status"] = [
+        "type" => "error",
+        "message" => "Please login as admin to access this page.",
+    ];
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["form_type"]) && $_POST["form_type"] == "profile_edit_form") {
