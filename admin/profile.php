@@ -74,6 +74,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["form_type"]) && $_POST
     }
 }
 
+// === Password update ===
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["form_type"]) && $_POST["form_type"] == "password_update_form") {
+    try {
+        // === Input validation ===
+        $rules = [
+            'password' => 'required|min:6|confirmed',
+        ];
+
+        $errors = validateInputs($_POST, $rules);
+        if (count($errors) > 0) {
+            throw new Exception(message: 'Validation error occurred.');
+        }
+
+        // === Update password ===
+        $stmt = $pdo->prepare('UPDATE users SET password = :password WHERE id = :id');
+        $stmt->bindParam(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $stmt->bindParam(':id', $_SESSION['admin']['id']);
+        $stmt->execute();
+
+        $success_message = 'Password updated successfully.';
+        // Redirect to profile page
+        header('Location: ' . ADMIN_URL . 'profile.php');
+        $_SESSION['status'] = [
+            'type' => 'success',
+            'message' => $success_message
+        ];
+        exit;
+    } catch (Exception $e) {
+        $error_message = $e->getMessage();
+    }
+}
+
 ?>
 <div class="row">
     <div class="col-12">
@@ -138,24 +170,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["form_type"]) && $_POST
             <hr class="m-0">
             <div class="card-body">
                 <form action="" method="POST" id="updatePasswordForm">
+                    <input type="hidden" name="form_type" value="password_update_form">
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label" for="current_password">Current Password <span
-                                    class="text-danger">*</span></label>
-                            <div class="position-relative auth-pass-inputgroup">
-                                <input type="password" class="form-control pe-5 password-input "
-                                    placeholder="Enter your current password" id="current_password"
-                                    name="current_password">
-                                <button
-                                    class="top-0 btn btn-link position-absolute end-0 text-decoration-none text-muted password-addon"
-                                    type="button"><i class="align-middle ri-eye-fill"></i></button>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                        </div>
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
                             <div class="position-relative auth-pass-inputgroup">
-                                <input type="password" class="form-control pe-5 password-input "
+                                <input type="password" class="form-control pe-5 password-input <?= $errors["password"] ? "is-invalid" : "" ?>"
                                     placeholder="Enter password" id="password" name="password">
                                 <button
                                     class="top-0 btn btn-link position-absolute end-0 text-decoration-none text-muted password-addon"
@@ -167,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["form_type"]) && $_POST
                             <label class="form-label" for="password-confirmation">Confirm Password <span
                                     class="text-danger">*</span></label>
                             <div class="position-relative auth-pass-inputgroup">
-                                <input type="password" class="form-control pe-5 password-input "
+                                <input type="password" class="form-control pe-5 password-input <?= $errors["password_confirmation"] ? "is-invalid" : "" ?>"
                                     placeholder="Enter confirm password" id="password-confirmation"
                                     name="password_confirmation">
                                 <button
