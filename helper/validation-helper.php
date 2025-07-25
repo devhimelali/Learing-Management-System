@@ -202,6 +202,41 @@ function validateInputs(array $inputs, array $rules)
                         $errors[$field][] = ucfirst($field) . ' must be an image file.';
                     }
                     break;
+                case 'mimes':
+                    if (!isset($_FILES[$field]) || $_FILES[$field]['error'] !== UPLOAD_ERR_OK) {
+                        $errors[$field][] = ucfirst($field) . ' must be a valid uploaded file.';
+                    } else {
+                        $allowedMimes = explode(',', $ruleParam);
+                        $fileMime = mime_content_type($_FILES[$field]['tmp_name']);
+                        $extension = pathinfo($_FILES[$field]['name'], PATHINFO_EXTENSION);
+
+                        // Laravel maps extensions, so we check MIME group from extension
+                        $mimeMap = [
+                            'jpeg' => 'image/jpeg',
+                            'jpg' => 'image/jpeg',
+                            'png' => 'image/png',
+                            'gif' => 'image/gif',
+                            'bmp' => 'image/bmp',
+                            'webp' => 'image/webp',
+                            'svg' => 'image/svg+xml',
+                            'pdf' => 'application/pdf',
+                            'doc' => 'application/msword',
+                            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        ];
+
+                        $valid = false;
+                        foreach ($allowedMimes as $mime) {
+                            if (isset($mimeMap[$mime]) && $fileMime === $mimeMap[$mime]) {
+                                $valid = true;
+                                break;
+                            }
+                        }
+
+                        if (!$valid) {
+                            $errors[$field][] = ucfirst($field) . ' must be a file of type: ' . implode(', ', $allowedMimes) . '.';
+                        }
+                    }
+                    break;
 
                 case 'regex':
                     if (!preg_match("/{$ruleParam}/", $value)) {

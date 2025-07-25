@@ -158,7 +158,8 @@
                 aria-haspopup="true" aria-expanded="false">
                 <span class="d-flex align-items-center">
                     <img class="rounded-circle header-profile-user"
-                        src="<?php BASE_URL ?>'assets/images/users/32/avatar-1.jpg" alt="Header Avatar">
+                        src="<?= ADMIN_URL . 'uploads/avatars/' . $_SESSION["admin"]["avatar"] ?? BASE_URL . 'assets/images/no-avatar.png' ?>"
+                        alt="Header Avatar">
                     <span class="text-start ms-xl-2">
                         <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                             <?= ucfirst($_SESSION["admin"]["name"]) ?>
