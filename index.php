@@ -200,6 +200,62 @@ $current_page = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
         </div>
     </nav>
 </header>
+<main></main>
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container text-md-start text-center">
+        <div class="row">
+            <!-- Company Info -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Your Company</h5>
+                <p>
+                    Short description or tagline goes here. You can include mission, vision or quick info.
+                </p>
+            </div>
+
+            <!-- Products -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="text-uppercase fw-bold mb-4">Products</h6>
+                <p><a href="#" class="text-white text-decoration-none">Product 1</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Product 2</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Product 3</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Product 4</a></p>
+            </div>
+
+            <!-- Useful links -->
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="text-uppercase fw-bold mb-4">Useful Links</h6>
+                <p><a href="#" class="text-white text-decoration-none">Pricing</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Settings</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Orders</a></p>
+                <p><a href="#" class="text-white text-decoration-none">Help</a></p>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                <p><i class="bi bi-house me-2"></i> 1234 Street Name, City</p>
+                <p><i class="bi bi-envelope me-2"></i> info@example.com</p>
+                <p><i class="bi bi-phone me-2"></i> +1 234 567 890</p>
+                <p><i class="bi bi-printer me-2"></i> +1 234 567 891</p>
+            </div>
+        </div>
+
+        <!-- Social media -->
+        <div class="text-center mt-4">
+            <a href="#" class="text-white me-4"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-white me-4"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-white me-4"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-white me-4"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="text-white me-4"><i class="bi bi-github"></i></a>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center text-white mt-4 border-top pt-3">
+        © 2025 Your Company Name. All Rights Reserved.
+    </div>
+</footer>
+
 <!-- JAVASCRIPT -->
 </body>
 <script src="<?= BASE_URL ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
