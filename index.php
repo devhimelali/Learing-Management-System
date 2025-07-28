@@ -39,6 +39,7 @@ $current_page = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
 
     <!-- Sweet Alert CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/libs/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -78,6 +79,126 @@ $current_page = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
             </ul>
         </div>
     </section>
+
+
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container">
+            <style>
+                .navbar-brand {
+                    padding-top: 6px;
+                    padding-bottom: 4px;
+                }
+            </style>
+            <a class="navbar-brand fw-bold" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Blog</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            Contact Us
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Search Form -->
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    </form>
+
+                    <!-- Styles -->
+                    <style>
+                        .icon-btn {
+                            position: relative;
+                            width: 36px;
+                            height: 36px;
+                            border: 2px solid #3762EA;
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            transition: background-color 0.3s, border-color 0.3s;
+                            cursor: pointer;
+                        }
+
+                        .icon-btn:hover {
+                            background-color: #3762EA;
+                            border-color: #2c50c0;
+                        }
+
+                        .icon-btn:hover i {
+                            color: #fff;
+                        }
+
+                        .icon-btn i {
+                            font-size: 1rem;
+                            color: #3762EA;
+                            transition: color 0.3s;
+                        }
+
+                        .count-badge {
+                            position: absolute;
+                            top: -9px;
+                            right: -7px;
+                            background-color: #3762EA;
+                            color: #fff;
+                            font-size: 0.65rem;
+                            padding: 4px 6px;
+                            border-radius: 50%;
+                            font-weight: bold;
+                            line-height: 1;
+                        }
+                        i.bi.bi-heart.fw-bold {
+                            padding-top: 4px;
+                        }
+                    </style>
+
+                    <!-- Cart Icon -->
+                    <div class="icon-btn" title="View Cart">
+                        <i class="bi bi-cart fw-bold"></i>
+                        <div class="count-badge">3</div>
+                    </div>
+
+                    <!-- Wishlist Icon -->
+                    <div class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart fw-bold"></i>
+                        <div class="count-badge">5</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </nav>
 </header>
 <!-- JAVASCRIPT -->
 </body>
